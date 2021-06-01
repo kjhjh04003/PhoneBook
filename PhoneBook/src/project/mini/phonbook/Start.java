@@ -19,15 +19,15 @@ public class Start {
 			int n = sc.nextInt(); // 번호 입력
 
 			if (n == 1) {
-				PhoneList.phonelist();
+				PhoneList.phonelist(); // phone_book 테이블 전체 조회 메서드 호출
 			} else if (n == 2) {
-				PhoneInsert.phoneInsert();
+				PhoneInsert.phoneInsert(); // phone_book 테이블 정보 삽입 메서드 호출
 			} else if (n == 3) {
-				PhoneRemove.removePhone();
+				PhoneRemove.removePhone(); // phone_book 테이블 정보 삭제 메서드 호출
 			} else if (n == 4) {
-				PhoneSearch.phoneSearch();
+				PhoneSearch.phoneSearch(); // phone_book 테이블 특정값 검색 메서드 호출
 			} else if (n == 5) {
-				Exit.exit(); // 종료 클래스의 종료 함수 호출
+				Exit.exit(); // 프로그램 종료 메서드 호출
 			} else {
 				System.out.println("[다시 입력해주세요]");
 				System.out.println();

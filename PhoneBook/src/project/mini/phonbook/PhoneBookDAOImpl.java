@@ -4,8 +4,13 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+ PhoneBookDAO 설계도를 기반으로 실체를 작성 - 21.06.01 by.준형
+ */
 public class PhoneBookDAOImpl implements PhoneBookDAO {
 
+	// DB접속
+	// 공통 메서드로 따로 분리해서 작성 - 21.06.01 by.준형
 	private Connection getConnection() throws SQLException {
 		Connection conn = null;
 		try {
@@ -22,21 +27,21 @@ public class PhoneBookDAOImpl implements PhoneBookDAO {
 	}
 
 	@Override
+	// phone_book 테이블 전체 조회
 	public List<PhoneBookVO> phoneList() {
 		Connection conn = null; // Connection 객체
 		Statement stmt = null; // SQL 실행에 필요한 객체
 
-		// Select
 		ResultSet rs = null; // SQL 결과를 담을 객체
 
 		// java의 결과 객체
 		List<PhoneBookVO> list = new ArrayList<>();
 
 		try {
-			conn = getConnection();
-			stmt = conn.createStatement();
+			conn = getConnection(); // db connection 객체를 메서드를 통해 얻어온다 - 21.06.01 by.준형
+			stmt = conn.createStatement(); // sql 실행을 위한 문맥 객체 생성 - 21.06.01 by.준형
 
-			// 쿼리
+			// phone_book 테이블 조회 쿼리
 			String sql = "SELECT id, name, hp, tel FROM phone_book";
 
 			// 쿼리 실행
@@ -70,15 +75,17 @@ public class PhoneBookDAOImpl implements PhoneBookDAO {
 	}
 
 	@Override
+	// phone_book 테이블에 정보 삽입
 	public boolean phoneInsert(PhoneBookVO vo) {
 		Connection conn = null;
-		PreparedStatement pstmt = null;
+		PreparedStatement pstmt = null; // 동적 바인딩을 위한 필드
 		int insertedCount = 0; // 반환 갯수
 
 		try {
 			conn = getConnection();
 
-			// 실행 계획
+			// id, 이름, 핸드폰번호, 전화번호 삽입 sql
+			// ?를 이용하여 동적으로 바인딩 할 변후 설정
 			String sql = "INSERT INTO phone_book VALUES(seq_phone_book_pk.NEXTVAL, ?, ?, ?)";
 			pstmt = conn.prepareStatement(sql);
 
@@ -103,6 +110,7 @@ public class PhoneBookDAOImpl implements PhoneBookDAO {
 	}
 
 	@Override
+	// id(PK)값을 이용한 정보 삭제
 	public boolean phoneRemove(Long id) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -110,6 +118,7 @@ public class PhoneBookDAOImpl implements PhoneBookDAO {
 
 		try {
 			conn = getConnection();
+			// id를 기준으로 삭제가 되기 때문에 동적으로 바인딩 할 id값을 ?로 설정
 			String sql = "DELETE FROM phone_book WHERE id=?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setLong(1, id);
@@ -129,12 +138,16 @@ public class PhoneBookDAOImpl implements PhoneBookDAO {
 	}
 
 	@Override
+	// 이름 검색
 	public List<PhoneBookVO> phoneSearch(String keyword) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 
+		// like를 이용한 검색으로 여러개의 반환이 있기 때문에 list로 결과를 전달받는다.
 		List<PhoneBookVO> list = new ArrayList<>();
+
+		// 특정 단어로 이름을 검색하여 찾기 때문에 where절 하위에 있는 like문이 동적으로 바인동 될 대상이다.
 		String sql = "SELECT id, name, hp, tel FROM phone_book WHERE name LIKE ?";
 
 		try {

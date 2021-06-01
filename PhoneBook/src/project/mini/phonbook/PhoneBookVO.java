@@ -1,5 +1,10 @@
 package project.mini.phonbook;
-
+ 
+/*
+ phone_book 테이블의 데이터를 주고받기 위한 클래스
+ 속성에 접근하기 위한 getter, setter 메서드만 존재
+  - 21.06.01 by.준형
+*/
 public class PhoneBookVO {
 
 	// 필드
