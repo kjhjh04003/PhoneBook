@@ -42,7 +42,7 @@ public class PhoneBookDAOImpl implements PhoneBookDAO {
 			stmt = conn.createStatement(); // sql 실행을 위한 문맥 객체 생성 - 21.06.01 by.준형
 
 			// phone_book 테이블 조회 쿼리
-			String sql = "SELECT id, name, hp, tel FROM phone_book";
+			String sql = "SELECT id, name, hp, tel FROM phone_book order by id";
 
 			// 쿼리 실행
 			rs = stmt.executeQuery(sql);
